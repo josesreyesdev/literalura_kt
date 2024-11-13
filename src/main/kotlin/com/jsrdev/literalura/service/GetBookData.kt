@@ -1,6 +1,5 @@
 package com.jsrdev.literalura.service
 
-import com.jsrdev.literalura.model.network.ResponseData
 import java.io.IOException
 import java.net.URI
 import java.net.http.HttpClient
