@@ -1,5 +1,5 @@
 package com.jsrdev.literalura.constants
 
-object Constant {
+object Constants {
     const val BASE_URL: String = "https://gutendex.com/"
 }
