@@ -16,9 +16,6 @@ class Menu(
     private val apiService: GetBookData = GetBookData(),
     private val deserializedData: ConvertData = ConvertData()
 ) {
-
-    private var bookData: List<BookData> = mutableListOf()
-
     fun showMenu() {
         while (true) {
             var option: Int? = entryOption()
@@ -32,7 +29,6 @@ class Menu(
                 3 -> {}
                 4 -> {}
                 5 -> {}
-                6 -> {}
                 0 -> {
                     println("********** GOOD BYE **********")
                     break
@@ -51,7 +47,6 @@ class Menu(
             3.- Registered authors
             4.- Authors alive in a given year
             5.- Books by language
-            6-. Search book by title from DB
             
             0.- Exit
         """.trimIndent()
@@ -66,7 +61,7 @@ class Menu(
     }
 
     private fun bookData() {
-        bookData = getResponseData().results
+        val bookData: List<BookData> = getResponseData().results
         bookData.forEach {
             val book: Book = it.toBook()
             repository.save(book)
@@ -77,10 +72,8 @@ class Menu(
     private fun printBook(book: Book) {
         println("----------Book----------")
         println("Title: ${book.title}")
-        println("Authors: ")
-        book.authors.forEachIndexed {i, a -> print("${i+1}.- $a - ") }
-        println("Languages: ")
-        book.languages.forEachIndexed {i, l -> print("${i+1}.- $l - ") }
+        book.authors.forEachIndexed {i, a -> println("Author ${i+1}.- ${a.name}") }
+        book.languages.forEachIndexed {i, l -> println("Language ${i+1}.- $l") }
         println("Download count: ${book.downloadCount}")
         println("------------------------")
     }

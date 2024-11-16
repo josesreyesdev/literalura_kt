@@ -36,4 +36,8 @@ data class Book(
     val mediaType: String,
     @Column(name = "download_count")
     val downloadCount: Int
-)
+) {
+    override fun toString(): String {
+        return "Book(id=$id, title='$title', authors=$authors, translators=$translators, subjects=$subjects, bookshelves=$bookshelves, languages=$languages, copyright=$copyright, mediaType='$mediaType', downloadCount=$downloadCount)"
+    }
+}

@@ -1,12 +1,6 @@
 package com.jsrdev.literalura.model.local
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "authors")
@@ -19,5 +13,13 @@ data class Author(
     @Column(name = "death_year")
     val deathYear: Int,
     @ManyToOne
-    val book: Book
-)
+    @JoinColumn(name = "book_id")
+    val book: Book,
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    val role: Role
+) {
+    override fun toString(): String {
+        return "Author(id=$id, name='$name', birthYear=$birthYear, deathYear=$deathYear, bookId=${book.id}, role=$role)"
+    }
+}
