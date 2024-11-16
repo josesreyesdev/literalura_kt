@@ -1,14 +1,18 @@
 package com.jsrdev.literalura.main
 
 import com.jsrdev.literalura.constants.Constants
+import com.jsrdev.literalura.model.local.Book
+import com.jsrdev.literalura.model.mappers.toBook
 import com.jsrdev.literalura.model.network.BookData
 import com.jsrdev.literalura.model.network.ResponseData
+import com.jsrdev.literalura.repository.BookRepository
 import com.jsrdev.literalura.service.ConvertData
 import com.jsrdev.literalura.service.GetBookData
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 class Menu(
+    private val repository: BookRepository,
     private val apiService: GetBookData = GetBookData(),
     private val deserializedData: ConvertData = ConvertData()
 ) {
@@ -63,16 +67,20 @@ class Menu(
 
     private fun bookData() {
         bookData = getResponseData().results
-
-        bookData.forEach { printBook(it)}
+        bookData.forEach {
+            val book: Book = it.toBook()
+            repository.save(book)
+            printBook(book)
+        }
     }
 
-    private fun printBook(book: BookData) {
+    private fun printBook(book: Book) {
         println("----------Book----------")
         println("Title: ${book.title}")
         println("Authors: ")
-        book.authors.forEachIndexed {i, a -> println("  ${i+1}.- $a") }
-        println("Language: ${book.languages}")
+        book.authors.forEachIndexed {i, a -> print("${i+1}.- $a - ") }
+        println("Languages: ")
+        book.languages.forEachIndexed {i, l -> print("${i+1}.- $l - ") }
         println("Download count: ${book.downloadCount}")
         println("------------------------")
     }

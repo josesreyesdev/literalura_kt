@@ -9,9 +9,9 @@ data class Book(
     val id: Long,
     val title: String,
     @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    val authors: List<Author>,
+    val authors: MutableList<Author>,
     @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    val translators: List<Author>?,
+    val translators: MutableList<Author>?,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
         name = "subjects",
