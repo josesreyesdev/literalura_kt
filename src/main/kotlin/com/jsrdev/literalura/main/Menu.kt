@@ -28,6 +28,7 @@ class Menu(
                 3 -> {}
                 4 -> {}
                 5 -> {}
+                6 -> {}
                 0 -> {
                     println("********** GOOD BYE **********")
                     break
@@ -46,6 +47,7 @@ class Menu(
             3.- Registered authors
             4.- Authors alive in a given year
             5.- Books by language
+            6-. Search book by title from DB
             
             0.- Exit
         """.trimIndent()
@@ -72,8 +74,8 @@ class Menu(
             println("\nInvalid entry, please, try again")
             bookTitle = enterTitle()
         }
-
         bookTitle = bookTitle.trim().lowercase()
+
         val title = encodedBookTitle(bookTitle)
         val buildURL: String = buildURL(title)
         val json: String = apiService.fetchData(buildURL)
