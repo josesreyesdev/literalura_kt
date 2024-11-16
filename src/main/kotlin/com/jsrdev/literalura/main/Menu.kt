@@ -25,7 +25,7 @@ class Menu(
 
             when (option) {
                 1 -> bookData()
-                2 -> {}
+                2 -> registeredBooks()
                 3 -> {}
                 4 -> {}
                 5 -> {}
@@ -69,8 +69,13 @@ class Menu(
         }
     }
 
+    private fun registeredBooks() {
+        val books: MutableList<Book> = repository.findAll()
+        books.forEach { printBook(it) }
+    }
+
     private fun printBook(book: Book) {
-        println("----------Book----------")
+        println("\n----------Book----------")
         println("Title: ${book.title}")
         book.authors.forEachIndexed {i, a -> println("Author ${i+1}.- ${a.name}") }
         book.languages.forEachIndexed {i, l -> println("Language ${i+1}.- $l") }
