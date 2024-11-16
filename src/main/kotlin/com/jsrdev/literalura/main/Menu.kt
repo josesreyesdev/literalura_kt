@@ -63,8 +63,18 @@ class Menu(
 
     private fun bookData() {
         bookData = getResponseData().results
-        println("Found Book: ")
-        bookData.forEachIndexed { i, b -> println("${i+1} -> $b") }
+
+        bookData.forEach { printBook(it)}
+    }
+
+    private fun printBook(book: BookData) {
+        println("----------Book----------")
+        println("Title: ${book.title}")
+        println("Authors: ")
+        book.authors.forEachIndexed {i, a -> println("  ${i+1}.- $a") }
+        println("Language: ${book.languages}")
+        println("Download count: ${book.downloadCount}")
+        println("------------------------")
     }
 
     /* ************* FETCH DATA *************** */

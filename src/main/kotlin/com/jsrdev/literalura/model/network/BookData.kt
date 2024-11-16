@@ -8,6 +8,7 @@ data class BookData(
     @JsonAlias("id") val id: Long,
     @JsonAlias("title") val title: String,
     @JsonAlias("authors") val authors: List<AuthorData>,
+    @JsonAlias("translators") val translators: List<AuthorData>?,
     @JsonAlias("subjects") val subjects: List<String>,
     @JsonAlias("bookshelves") val bookshelves: List<String>,
     @JsonAlias("languages") val languages: List<String>,
