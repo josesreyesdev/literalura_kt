@@ -29,7 +29,7 @@ class Menu(
                 2 -> registeredBooks()
                 3 -> registeredAuthors()
                 4 -> authorsAliveInAGivenYear()
-                5 -> {}
+                5 -> booksByLanguage()
                 0 -> {
                     println("********** GOOD BYE **********")
                     break
@@ -133,6 +133,41 @@ class Menu(
         println("Books: ")
         books.forEachIndexed { i, b -> println("    ${i+1} .- ${b.title}") }
         println("----------------------------")
+    }
+
+    private fun booksByLanguage() {
+        var language: String? = null
+
+        while (language == null) {
+            val entryLanguage = printMenu()?.trim()?.lowercase()
+            language = when (entryLanguage) {
+                "es", "español", "espanol", "spanish" -> "es"
+                "en", "english", "inglés", "ingles" -> "en"
+                "fr", "francés", "frances", "french" -> "fr"
+                "pt", "portugués", "portugues", "portuguese" -> "pt"
+                else -> {
+                    println("\nInvalid language entered: $entryLanguage. Please, try again.")
+                    null
+                }
+            }
+        }
+
+        val books: List<Book> = repository.findBookByLanguage(language)
+        if (books.isNotEmpty())
+            books.forEach { printBook(it) }
+        else println("Books not found for the language: $language")
+    }
+
+    private fun printMenu(): String? {
+        println("\nOptions:")
+        val menu = """
+            es - spanish
+            en - english
+            fr - french
+            pt - portugués
+        """.trimIndent()
+        println("$menu\n\nEnter the option: ")
+        return readlnOrNull()
     }
 
     /* ************* FETCH DATA *************** */
