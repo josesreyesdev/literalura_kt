@@ -21,15 +21,14 @@ class Menu(
     fun showMenu() {
         while (true) {
             var option: Int? = entryOption()
-            while (option == null) {
+            while (option == null)
                 option = invalidOption()
-            }
 
             when (option) {
                 1 -> bookData()
                 2 -> registeredBooks()
                 3 -> registeredAuthors()
-                4 -> {}
+                4 -> authorsAliveInAGivenYear()
                 5 -> {}
                 0 -> {
                     println("********** GOOD BYE **********")
@@ -92,10 +91,49 @@ class Menu(
 
     private fun printAuthor(author: Author) {
         println("\n----------Author----------")
-        println("$author")
+        println("Author: ${author.name}")
+        println("Birth Year: ${author.birthYear}")
+        println("Death Year: ${author.deathYear}")
+        println("Books: [${author.book.title}]")
         println("----------------------------")
     }
 
+    private fun authorsAliveInAGivenYear() {
+        var entryYear: Int? = entryYear()
+        while (entryYear == null) entryYear = invalidEntryYear()
+
+        val authors: List<Author> = repository.findAuthorsInABirthYear(entryYear)
+        if (authors.isNotEmpty()) {
+            val groupedAuthors = authors.groupBy { Triple(it.name, it.birthYear, it.deathYear) }
+                .mapValues { entry ->
+                    entry.value.flatMap { listOf(it.book) }
+                }
+
+            groupedAuthors.forEach { (key, books) ->
+                printGroupedAuthor(key.first, key.second, key.third, books)
+            }
+        } else println("Authors not found for the year: $entryYear")
+    }
+
+    private fun entryYear(): Int? {
+        println("Enter the year of the authors you wish to search for")
+        return readln().toIntOrNull()
+    }
+
+    private fun invalidEntryYear(): Int? {
+        println("\nInvalid entry, please, try again")
+        return entryYear()
+    }
+
+    private fun printGroupedAuthor(name: String, birthYear: Int, deathYear: Int?, books: List<Book>) {
+        println("\n----------Author----------")
+        println("Author: $name")
+        println("Birth Year: $birthYear")
+        println("Death Year: ${deathYear ?: "N/A"}")
+        println("Books: ")
+        books.forEachIndexed { i, b -> println("    ${i+1} .- ${b.title}") }
+        println("----------------------------")
+    }
 
     /* ************* FETCH DATA *************** */
     private fun getResponseData(): ResponseData {

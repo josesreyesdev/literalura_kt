@@ -11,4 +11,7 @@ interface BookRepository: JpaRepository<Book, Long> {
     @Query("SELECT a FROM Book AS b JOIN b.authors AS a WHERE a.role = :role")
     fun findAuthorsByRole(role: Role): List<Author>
 
+    @Query("SELECT DISTINCT a FROM Book AS b JOIN b.authors AS a WHERE a.birthYear = :entryBirthYear")
+    fun findAuthorsInABirthYear(entryBirthYear: Int): List<Author>
+
 }
