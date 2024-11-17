@@ -1,7 +1,9 @@
 package com.jsrdev.literalura.main
 
 import com.jsrdev.literalura.constants.Constants
+import com.jsrdev.literalura.model.local.Author
 import com.jsrdev.literalura.model.local.Book
+import com.jsrdev.literalura.model.local.Role
 import com.jsrdev.literalura.model.mappers.toBook
 import com.jsrdev.literalura.model.network.BookData
 import com.jsrdev.literalura.model.network.ResponseData
@@ -26,7 +28,7 @@ class Menu(
             when (option) {
                 1 -> bookData()
                 2 -> registeredBooks()
-                3 -> {}
+                3 -> registeredAuthors()
                 4 -> {}
                 5 -> {}
                 0 -> {
@@ -82,6 +84,18 @@ class Menu(
         println("Download count: ${book.downloadCount}")
         println("------------------------")
     }
+
+    private fun registeredAuthors() {
+        val authors = repository.findAuthorsByRole(role = Role.AUTHOR)
+        authors.forEach { printAuthor(it) }
+    }
+
+    private fun printAuthor(author: Author) {
+        println("\n----------Author----------")
+        println("$author")
+        println("----------------------------")
+    }
+
 
     /* ************* FETCH DATA *************** */
     private fun getResponseData(): ResponseData {
